@@ -1,6 +1,6 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-import { purple, red } from '@mui/material/colors';
- 
+import { createTheme, responsiveFontSizes } from '@mui/material/styles'
+import { purple, red } from '@mui/material/colors'
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -12,10 +12,10 @@ const theme = createTheme({
   },
   typography: {
     h4: {
-        fontSize: '2rem',
-        fontWeight: 600,
-      },
+      fontSize: '2rem',
+      fontWeight: 600,
+    },
   },
-});
- 
-export default responsiveFontSizes(theme);
+})
+
+export default responsiveFontSizes(theme)

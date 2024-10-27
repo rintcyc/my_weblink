@@ -1,29 +1,27 @@
-import * as React from 'react';
-import { styled, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import theme from "../styles/theme";
-import SideMenu from "./SideMenu";
- 
-const drawerWidth: number = 240;
- 
+import * as React from 'react'
+import { styled, ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import MuiDrawer from '@mui/material/Drawer'
+import Box from '@mui/material/Box'
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import Container from '@mui/material/Container'
+import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import theme from '../styles/theme'
+import SideMenu from './SideMenu'
+
+const drawerWidth: number = 240
+
 interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
+  open?: boolean
 }
- 
+
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: prop => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
@@ -38,52 +36,53 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-}));
- 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    '& .MuiDrawer-paper': {
-      position: 'relative',
-      whiteSpace: 'nowrap',
-      width: drawerWidth,
+}))
+
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: prop => prop !== 'open',
+})(({ theme, open }) => ({
+  '& .MuiDrawer-paper': {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    boxSizing: 'border-box',
+    ...(!open && {
+      overflowX: 'hidden',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
+        duration: theme.transitions.duration.leavingScreen,
       }),
-      boxSizing: 'border-box',
-      ...(!open && {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-          width: theme.spacing(9),
-        },
-      }),
-    },
-  }),
-);
- 
+      width: theme.spacing(7),
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing(9),
+      },
+    }),
+  },
+}))
+
 type LayoutProps = {
-    title: string;
-    children: React.ReactNode;
-};
- 
-const Layout: React.FC<LayoutProps> = ({title, children}) => {
+  title: string
+  children: React.ReactNode
+}
+
+const Layout: React.FC<LayoutProps> = ({ title, children }) => {
   // サイドメニュー開閉状態
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(true)
   // サイドメニュー開閉処理
   const toggleDrawer = () => {
-    setOpen(!open);
-  };
- 
+    setOpen(!open)
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>{/* ヘッダー部分の実装 */}
+        <AppBar position="absolute" open={open}>
+          {/* ヘッダー部分の実装 */}
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -99,7 +98,8 @@ const Layout: React.FC<LayoutProps> = ({title, children}) => {
                 ...(open && { display: 'none' }),
               }}
             >
-              <MenuIcon />{/* サイドメニューを開閉できるボタン */}
+              <MenuIcon />
+              {/* サイドメニューを開閉できるボタン */}
             </IconButton>
             <Typography
               component="h1"
@@ -110,11 +110,6 @@ const Layout: React.FC<LayoutProps> = ({title, children}) => {
             >
               {title}
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />{/* 通知ボタン */}
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -127,7 +122,8 @@ const Layout: React.FC<LayoutProps> = ({title, children}) => {
             }}
           >
             <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />{/* サイドメニューを開閉できるボタン */}
+              <ChevronLeftIcon />
+              {/* サイドメニューを開閉できるボタン */}
             </IconButton>
           </Toolbar>
           <Divider />
@@ -136,7 +132,7 @@ const Layout: React.FC<LayoutProps> = ({title, children}) => {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
+            backgroundColor: theme =>
               theme.palette.mode === 'light'
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
@@ -149,17 +145,17 @@ const Layout: React.FC<LayoutProps> = ({title, children}) => {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {children}
             <Box mt={4}>
-                <Typography variant="body2" color="text.secondary" align="center" > 
-                    {'Copyright © my-app'} 
-                    {new Date().getFullYear()} 
-                    {'.'} 
-                </Typography>
+              <Typography variant="body2" color="text.secondary" align="center">
+                {'Copyright © my-app'}
+                {new Date().getFullYear()}
+                {'.'}
+              </Typography>
             </Box>
           </Container>
         </Box>
       </Box>
     </ThemeProvider>
-  );
-};
- 
-export default Layout;
+  )
+}
+
+export default Layout

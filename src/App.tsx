@@ -1,18 +1,29 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { createContext, useState } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import RSSViewPage from './components/pages/RSSViewPage'
+import RSSRegistPage from './components/pages/RSSRegistPage'
 
-import AboutPage from "./components/pages/AboutPage";
-import HomePage from "./components/pages/RSSPage";
+export const FeedContext = createContext({ rssFeedUrls: [], setRssFeedUrls: () => {} });
 
 const App: React.FC = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={`/`} element={<HomePage />} />
-        <Route path={`/about/`} element={<AboutPage />} />
-      </Routes>
-    </BrowserRouter>
-  );
-};
+  const [rssFeedUrls, setRssFeedUrls] = useState<string[]>(() => {
+    try {
+      const savedFeeds = localStorage.getItem('rssFeeds');
+      return savedFeeds ? JSON.parse(savedFeeds) : [];
+    } catch (error) {
+      console.error("Error parsing localStorage data: ", error);
+      return [];
+    }
+  });
 
-export default App;
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<RSSViewPage />} />
+          <Route path="/register" element={<RSSRegistPage />} />
+        </Routes>
+      </Router>
+    );
+}
+
+export default App
