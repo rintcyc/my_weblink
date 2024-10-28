@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import RSSParser from 'rss-parser'
 import {
   TableCell,
@@ -14,40 +14,34 @@ import {
   AccordionDetails,
 } from '@mui/material/'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-
-const rssFeed = [
-  { url: 'https://zenn.dev/nikaera/feed', name: 'Zenn' },
-  { url: 'https://qiita.com/nikaera/feed', name: 'Qiita' },
-  { url: 'https://note.com/tsujiharasaki/rss', name: 'Note' },
-]
+import { FeedContext } from '../../App'
 
 interface FeedItem {
-  title?: string
-  link?: string
-  pubDate?: string
+  title?: string;
+  link?: string;
+  pubDate?: string;
 }
 
-const RssFeed = () => {
-  const parser = new RSSParser()
-  const [feeds, setFeeds] = useState<Record<string, FeedItem[]>>({})
+const useRSSFeed = () => {
+  const parser = new RSSParser();
+  const { rssFeedUrls } = useContext(FeedContext);
+  const [feeds, setFeeds] = useState<Record<string, FeedItem[]>>({});
 
   useEffect(() => {
     const access_url = async () => {
       const allFeeds: Record<string, FeedItem[]> = {}
 
-      for (const feedSource of rssFeed) {
+      for (const feed of rssFeedUrls) {
         try {
-          const response = await fetch(
-            `https://api.allorigins.win/get?url=${encodeURIComponent(feedSource.url)}`,
-          )
+          const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feed.url)}`);
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json()
-          const feed = await parser.parseString(data.contents)
+          const data = await response.json();
+          const feedData = await parser.parseString(data.contents);
 
-          if (feed && feed.items) {
-            const items = feed.items.map(item => ({
+          if (feedData && feedData.items) {
+            const items = feedData.items.map(item => ({
               title: item.title,
               link: item.link,
               pubDate: item.pubDate
@@ -62,14 +56,14 @@ const RssFeed = () => {
                     .replace(/\//g, '-')
                 : '',
             }))
-            allFeeds[feedSource.name] = items
+            allFeeds[feed.name] = items
           } else {
             console.error(
-              `Failed to fetch or parse feed for URL: ${feedSource.url}`,
+              `Failed to fetch or parse feed for URL: ${feedData.url}`,
             )
           }
         } catch (error) {
-          console.error(`Error fetching feed for URL: ${feedSource.url}`, error)
+          console.error(`Error fetching feed for URL: ${feed.url}`, error)
         }
       }
 
@@ -121,4 +115,4 @@ const RssFeed = () => {
   )
 }
 
-export default RssFeed
+export default useRSSFeed

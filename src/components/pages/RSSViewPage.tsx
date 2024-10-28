@@ -1,7 +1,7 @@
 import { Paper, TableContainer } from '@mui/material/'
 import Layout from '../templates/Layout'
 
-import RssFeed from './rssFeed'
+import RssFeed from './useRSSFeed'
 
 const HomePage: React.FC = () => {
   return (
@@ -13,4 +13,4 @@ const HomePage: React.FC = () => {
   )
 }
 
-export default HomePage
+export default HomePage;
