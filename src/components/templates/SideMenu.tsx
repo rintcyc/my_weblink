@@ -27,7 +27,7 @@ const SideMenu: React.FC = () => {
           </ListItemIcon>
           <ListItemText primary="RSS登録" />
         </ListItemButton>
-{/*        <ListItemButton>
+        {/*        <ListItemButton>
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>
