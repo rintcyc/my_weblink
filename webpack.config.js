@@ -61,7 +61,7 @@ module.exports = {
     filename: 'index.js',
   },
   devServer: {
-    publicPath: '/dist/',
+    publicPath: '/build/',
     hot: true,
     open: true,
   }
