@@ -17,15 +17,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { FeedContext } from '../../App'
 
 interface FeedItem {
-  title?: string;
-  link?: string;
-  pubDate?: string;
+  title?: string
+  link?: string
+  pubDate?: string
 }
 
 const useRSSFeed = () => {
-  const parser = new RSSParser();
-  const { rssFeedUrls } = useContext(FeedContext);
-  const [feeds, setFeeds] = useState<Record<string, FeedItem[]>>({});
+  const parser = new RSSParser()
+  const { rssFeedUrls } = useContext(FeedContext)
+  const [feeds, setFeeds] = useState<Record<string, FeedItem[]>>({})
 
   useEffect(() => {
     const access_url = async () => {
@@ -33,12 +33,14 @@ const useRSSFeed = () => {
 
       for (const feed of rssFeedUrls) {
         try {
-          const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(feed.url)}`);
+          const response = await fetch(
+            `https://api.allorigins.win/get?url=${encodeURIComponent(feed.url)}`,
+          )
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status}`)
           }
-          const data = await response.json();
-          const feedData = await parser.parseString(data.contents);
+          const data = await response.json()
+          const feedData = await parser.parseString(data.contents)
 
           if (feedData && feedData.items) {
             const items = feedData.items.map(item => ({
