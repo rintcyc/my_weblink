@@ -72,4 +72,8 @@ module.exports = {
     port: 3000,
     open: true,
   },
+  performance: {
+    maxAssetSize: 1024 * 1024, // 1MB
+    maxEntrypointSize: 1024 * 1024, // 1MB
+  },
 };
